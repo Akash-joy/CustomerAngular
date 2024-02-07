@@ -1,0 +1,36 @@
+
+<p-table [value]="getCustomers()">
+    <ng-template pTemplate="header">
+        <tr>
+            <th></th>
+              <th><input type="text" pInputText [(ngModel)]="name" /></th>
+              <th><input type="text" pInputText [(ngModel)]="mobile" /></th>
+              <th><input type="text" pInputText [(ngModel)]="place" /></th>
+            <th><p-button label="Add" (click)="addCustomer(name,mobile,place)" [disabled]="!name || !mobile || !place"></p-button></th>
+            <th><p-button label="Del All" (click)="delAll($event)"[disabled]="getCustomers().length === 0"></p-button></th><p-confirmPopup></p-confirmPopup>
+        </tr>
+        <tr>
+            <th *ngIf="getCustomers().length > 0">Customer id</th>
+            <th *ngIf="getCustomers().length == 0"></th>
+            <th>Name </th>
+            <th>Mobile</th>
+            <th>Place</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-customer>
+        <tr>
+            <td>{{ customer.customerid }}</td>
+            <td *ngIf="! customer.editOn">{{ customer.customername }}</td>
+           <td  *ngIf=" customer.editOn"> <input  type="text" pInputText [(ngModel)]="customer.customername" /></td>
+            <td  *ngIf="! customer.editOn">{{ customer.mobile }}</td>
+           <td *ngIf=" customer.editOn" > <input  type="text" pInputText [(ngModel)]="customer.mobile" /></td> 
+            <td  *ngIf="! customer.editOn">{{ customer.customeraddress }}</td>
+           <td *ngIf=" customer.editOn"> <input  type="text" pInputText [(ngModel)]="customer.customeraddress" /> </td>
+            <td><p-button *ngIf="! customer.editOn" label="Edit" (click)="editCustomer(customer)"></p-button></td>
+            <td *ngIf=" customer.editOn"><p-button label="Submit" (click)="EditSubmit(customer.customerid,customer.customername,customer.mobile,customer.customeraddress)" ></p-button></td>
+            <td *ngIf="! customer.editOn"><p-button label="Delete" (click)="deleteCustomer(customer,$event)"></p-button></td><p-confirmPopup></p-confirmPopup>
+            <td *ngIf=" customer.editOn"><p-button label="Cancel" (click)=" customer.editOn=false" ></p-button></td>
+    </ng-template>
+</p-table>
